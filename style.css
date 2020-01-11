@@ -1,13 +1,38 @@
-.logo{
-    margin: 1px;
-    border: solid;
-    /* some css code here */
+.logo-container{
+    display: flex;
+    flex-direction: row;
 }
 
-.people-menu, .map, .logs-menu{
-    margin: 1px;
-    border: 1px;
+.icon{
+    /* make them all a consistent size*/
+    
+}
+
+.logo{
+    /* border: solid; */
+}
+
+.info-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.people-menu, .logs-menu{
+    margin: auto;
+    border: 0.5%;
     border-style: solid;
     border-color:#80002a;
-    border-width: 1px;
+    border-width: 1%;
+    height: 40%;
+    width: 20%;
+}
+
+.map {
+    margin: auto;
+    border: 0.5%;
+    border-style: solid;
+    border-color:#80002a;
+    border-width: 1%;
+    height: 40%;
+    width: 40%;
 }
