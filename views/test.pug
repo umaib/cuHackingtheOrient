@@ -1,0 +1,18 @@
+extends layout
+
+block scripts
+  script(src="/js/test.js")
+
+block content
+  ng-controller(ng-controller="testCtrl")
+    h1 cuHacking the Orient
+    br
+    h2 Search Events
+    form(ng-submit="events.search()")
+      input(type='text', ng-model='events.deviceId', placeholder='Device id')
+      input(type='text', ng-model='events.eventId', placeholder='Event id')
+      input(type='text', ng-model='events.guestId', placeholder='Guest id')
+      button(type="submit") Submit
+    div {{events.error}}
+    div
+      p(ng-repeat="ev in events.result") {{ev}}

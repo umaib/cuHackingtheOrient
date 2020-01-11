@@ -1,21 +1,20 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const fs = require("fs");
+const path = require("path");
 const mongoose = require("mongoose");
+const logger = require("morgan");
 
 const G = require("./config/globals");
 
 var app = express();
 
+app.use(logger("dev"));
+
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
-app.use("/angular", express.static("./angular"));
-app.use("/css", express.static("./css"));
-app.use("/html", express.static("./html"));
-app.use("/model", express.static("./model"));
-app.use("/modules", express.static("./node_modules"));
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
@@ -23,6 +22,8 @@ app.use(
     extended: true
   })
 );
+
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/api", require("./api/api"));
 

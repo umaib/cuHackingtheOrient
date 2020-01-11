@@ -1,5 +1,5 @@
 doctype html
-html
+html(lang="en", ng-app="app")
   head
     base(href="/")
     meta(charset='UTF-8')
@@ -24,31 +24,14 @@ html
     script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js")
     //- script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular-route.js")
     script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular-cookies.min.js")
-    //- script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular-sanitize.min.js")
+    script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular-sanitize.min.js")
     script(src="https://code.jquery.com/jquery-3.3.1.slim.min.js")
-    //- script(src="/js/client.js")
+    script(src='/js/contextMenu.js')
+    script(src="/js/client.js")
     block scripts
 
-  //- body(ng-app="app", ng-controller="ctrl")
   body
     - var horzSpinner = "<div class='lds-ellipsis'><div></div><div></div><div></div><div></div></div>"
     - var circleSpinner = "<div class='lds-ring'><div></div><div></div><div></div><div></div></div>"
     - var smallCircleSpinner = "<div class='spinner-box'><div class='circle-border'><div class='circle-core'></div></div></div>"
     block content
-    
-  footer
-    .legal.bg-secondary-strong
-      .links
-        a(href="/legal") Legal
-        a(href="/support") Support
-        //- a(href="/careers") Work With Us
-      if !!footerDisclaimers
-        .disclaimers.text-muted
-          each disclaimer in footerDisclaimers
-            | !{disclaimer}
-    .main.bg-darker.color-muted
-      .title
-        //- TODO change this to Binder Cloud Backup once you're registered
-        | Copyright © Victor Olaitan 2019 All rights reserved
-      .address
-        | Ottawa, ON, Canada
