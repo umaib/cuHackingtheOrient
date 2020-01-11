@@ -1,0 +1,13 @@
+.logo{
+    margin: 1px;
+    border: solid;
+    /* some css code here */
+}
+
+.people-menu, .map, .logs-menu{
+    margin: 1px;
+    border: 1px;
+    border-style: solid;
+    border-color:#80002a;
+    border-width: 1px;
+}
