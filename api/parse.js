@@ -1,66 +1,87 @@
 const fs = require("fs");
-const mongoose = require("mongoose");
 
+// const G = require("../config/globals");
 const Event = require("../model/event");
-const AccessPoint = require("../model/accessPoint");
-const DoorSensor = require("../model/doorSensor");
+const Device = require("../model/device");
+const Person = require("../model/person");
 
-const DATA_FILE_NAME = "./martello-data.json";
+const DATA_FILE_NAME = "api/martello-data.json";
 
 async function loadFile() {
-  await fs.readFileSync(DATA_FILE_NAME);
+  return JSON.parse(await fs.readFileSync(DATA_FILE_NAME));
+}
+
+function resetCollections() {
+  return new Promise((resolve, reject) => {
+    Event.deleteMany({}, err => {
+      if (err) return reject(err);
+      Device.deleteMany({}, err => {
+        if (err) return reject(err);
+        Person.deleteMany({}, err => {
+          if (err) return reject(err);
+          resolve();
+        });
+      });
+    });
+  });
 }
 
 async function main() {
+  await resetCollections();
+
   let data = await loadFile();
-  let events = [];
-  let accessPoints = [];
-  let doorSensors = [];
-  let people = makePeople();
 
-  for (let date_str in data) {
+  let devices = [];
+  let people = [];
+
+  let knownPeople = makePeople();
+  people = people.concat(knownPeople.map(p => p.name));
+  await Person.create(knownPeople);
+  knownPeople = null;
+
+  for (const date_str in data) {
     const date_seconds = parseInt(date_str);
-    const event_data = data[date_seconds];
+    const event_data = data[date_str];
 
-    let date = new Date();
-    date.setUTCMilliseconds(date_seconds * 1000);
+    // console.log("================== data\n\n");
+    // console.log(event_data);
+    // console.log("\n\n================== data");
 
-    events.push(makeEvent(event_data));
+    let timestamp = new Date();
+    timestamp.setUTCMilliseconds(date_seconds * 1000);
 
-    if (event_data.guest_id != "n/a" && people.findIndex(g => g.guest_id == event_data.guest_id) < 0) {
-      people.push({
-        name: event_data.guest_id,
+    let eventDoc = makeEvent(event_data, timestamp);
+    if (eventDoc) {
+      await Event.create(eventDoc);
+    }
+
+    if (
+      event_data["guest-id"] != "n/a" &&
+      !people.includes(event_data["guest-id"])
+    ) {
+      people.push(event_data["guest-id"]);
+      await Person.create({
+        name: event_data["guest-id"],
         role: "unknown"
       });
     }
 
-    switch (event_data.device) {
-      case "accesss point":
-        if (accessPoints.findIndex(ap => ap.device_id == event_data.device_id) < 0) {
-          accessPoints.push(makeAccessPoint(event_data));
-        }
-        break;
-      case "door sensor":
-        if (doorSensors.findIndex(ds => ds.device_id == event_data.device_id) < 0) {
-          doorSensors.push(makeDoorSensor(event_data));
-        }
-        break;
+    if (
+      !devices.find(
+        d =>
+          d.deviceId == event_data["device-id"] &&
+          d.deviceType == event_data["device"]
+      )
+    ) {
+      await Device.create({
+        deviceId: event_data["device-id"],
+        deviceType: event_data["device"]
+      });
     }
-
-    Event.create()
   }
 
-  let session = await beginMongooseSession();
-  
-  Event.deleteMany({}).session(session);
-  AccessPoint.deleteMany({}).session(session);
-  DoorSensor.deleteMany({}).session(session);
-
-  Event.create(events, {session});
-  AccessPoint.create(accessPoints, {session});
-  DoorSensor.create(doorSensors, {session});
-
-  await session.commitTransaction();
+  console.log(devices);
+  console.log(people);
 }
 
 function makePeople() {
@@ -106,28 +127,22 @@ function makePeople() {
       name: "Harrison",
       role: "reception-night-staff"
     }
-  ]
+  ];
 }
 
-function makeEvent(event_data) {}
+function makeEvent(event_data, timestamp) {
+  let event = {
+    deviceId: event_data["device-id"],
+    eventId: event_data["event"],
+    timestamp: timestamp,
+    guestId: event_data["guest-id"]
+  };
 
-function makeAccessPoint(event_data) {}
+  if (event_data.guestId != "n/a") {
+    event.guestId = event_data["guest-id"];
+  }
 
-function makeDoorSensor(event_data) {}
-
-/**
- * @returns {Promise<mongoose.ClientSession>}
- */
-function beginMongooseSession() {
-  return new Promise((resolve, reject) => {
-    mongoose
-      .startSession()
-      .then(session => {
-        session.startTransaction();
-        resolve(session);
-      })
-      .catch(reject);
-  });
+  return event;
 }
 
 module.exports = main;

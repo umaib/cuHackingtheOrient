@@ -3,16 +3,13 @@ const bodyParser = require("body-parser");
 const fs = require("fs");
 const mongoose = require("mongoose");
 
+const G = require("./config/globals");
+
 var app = express();
 
-// DON'T FORGET TO MAKE THIS WEB APP HTTPS!!!
-// ALSO MAKE SURE ALL MODULES USE THE UPDATED WEB ADDRESS!
-//  modules to look out for:
-//   - app.server.email
-//   - app.server.source.onedrive.js
-//
-// TODO: DON'T FORGET TO RESTRICT APP_SECRET ORIGINS FOR ALL SOURCES
-// TODO: verify GDrive/Onedrive/Dropbox Oauth with privacy policy etc.
+// view engine setup
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "pug");
 
 app.use("/angular", express.static("./angular"));
 app.use("/css", express.static("./css"));

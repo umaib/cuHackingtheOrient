@@ -1,18 +1,27 @@
 const router = require("express").Router();
+const fs = require("fs");
 
 const Event = require("../model/event");
-const AccessPoint = require("../model/accessPoint");
-const DoorSensor = require("../model/doorSensor");
+const Device = require("../model/device");
 
 const parseMain = require("./parse");
 
 router.get("/parse", (req, res, next) => {
-  parseMain().then(() => {
-    Event.find({}, (err, events) => {
-      if (err) return next(err);
-      console.log(events);
+  parseMain()
+    .then(() => {
+      Event.find({}, (err, events) => {
+        if (err) return next(err);
+        res.send(events);
+      });
     })
-  }).catch(next)
+    .catch(next);
+});
+
+router.get("/james", (req, res, next) => {
+  Event.find({ deviceId: 250 }, (err, events) => {
+    if (err) return next(err);
+    res.send(events);
+  }).sort({ timestamp: -1 });
 });
 
 module.exports = router;

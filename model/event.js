@@ -16,7 +16,7 @@ var eventSchema = mongoose.Schema({
     required: true,
     index: true
   },
-  guest_id: {
+  guestId: {
     type: String
   }
 });
