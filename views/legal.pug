@@ -1,0 +1,38 @@
+extends layout
+
+block styles
+  link(rel='stylesheet', href='/css/legal.css')
+
+block scripts
+  //- script(src="/js/index.js")
+
+block content
+  section#header.container
+    .row
+      .logo
+        img(src="/img/logo.png")
+        | Binder 
+        span.beta BETA
+    .row
+      h1 Legal Stuffs
+      p Pretty much all you need to know is here. If that's not the case, reach out and we'll figure it out!
+      a(href="mailto:legal@binderall.xyz")
+        button.border-accent Contact legal
+  hr
+  section#links.container
+    .row
+      .link.col-md-4
+        a(href="/html/terms_of_service.html")
+          div.drop-shadow-light
+            h3 Terms of Service
+            p Rules for using our services and content
+      .link.col-md-4
+        a(href="/html/privacy_policy.html")
+          div.drop-shadow-light
+            h3 Privacy Policy
+            p Our promise regarding the management of your data
+      .link.col-md-4
+        a(href="/html/eula.html")
+          div.drop-shadow-light
+            h3 EULA
+            p Your responsibility while using our services

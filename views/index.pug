@@ -1,0 +1,123 @@
+extends layout
+
+block styles
+  link(rel='stylesheet', href='/css/index.css')
+  link(rel='stylesheet', href='/css/index_extra.css', async)
+
+block scripts
+  //- script(src="/js/index.js")
+
+block content
+  section#intro
+    #stars
+    .top
+      .logo
+        img(src="/img/logo.png")
+        | Binder 
+        span.beta BETA
+      a.register(href="#final")
+        | Get Started
+    .mid
+      .text.color-inverse-darker.w3-animate-opacity
+        | Safeguard Your Files With 
+        span.punch Binder
+      .right
+        img(src="/img/index/intro-img.png")
+        .buttons
+          a(href="https://github.com/DeveloperRic/binder-local/releases")
+            button.bg-secondary-light
+              i.fab.fa-windows
+              | Windows 10
+          //- a(href="https://github.com/DeveloperRic/binder-local/releases")
+          //-   button.bg-secondary-light
+          //-     i.fab.fa-apple
+          //-     | Mac OS X
+    .bottom.w3-animate-opacity
+      .highlight.w3-animate-bottom
+        i.fas.fa-sync-alt.color-inverse-darker
+        | Detects Updates
+      .highlight.w3-animate-bottom
+        i.fas.fa-shield-alt.color-inverse-darker
+        | Fully Encrypted
+      .highlight.w3-animate-bottom
+        i.fas.fa-clock.color-inverse-darker
+        | Always Available
+  #press.bg-secondary-strong
+    h2.color-muted AS SEEN ON
+    .publishers
+      img.ph(src="/img/index/product_hunt.png")
+      img(src="/img/index/medium.png")
+  section#security.main.bg-secondary.container
+    .content.row
+      .left.col-md-7
+        h1 All-round Privacy & Security
+        .text
+          p
+            b Your data is encrypted over 2 layers at all times. 
+            | Throughout a file's lifecycle, its contents are completely obsfucated, 
+            | preventing anyone from accessing your data.
+          p
+            b There are no back-doors. 
+            | We respect your need for privacy, which is why by principle, 
+            | we do not provide any back-doors to read your data-- 
+            | not for support teams, not for developers and not even for administrators.
+      //- img.col-md-5(src="/img/index/security.gif")
+      .img.col-md-5
+        i.fas.fa-lock
+    hr
+  section#loss.main.bg-secondary.container
+    .content.row
+      .left.col-md-7
+        h1 Never Loose Your Data Again
+        .text
+          p
+            | In Binder, 
+            b files are distributed across multiple locations. 
+            | So spill coffee all you like¹, Binder will let you focus on the work you need to do.
+          p
+            b Binned files persist in Binder
+            | ². What this means is, if somehow you lost a file on your computer-- 
+            | maybe someone accidentally deleted a file, or maybe you moved it to a different folder-- 
+            | regardless of what happens, Binder gives you the option to restore that file.
+      //- img.col-md-5(src="/img/index/loss.gif")
+      .img.col-md-5
+        i.fas.fa-boxes
+    hr
+  section#updates.main.bg-secondary.container
+    .content.row
+      .left.col-md-7
+        h1 Automatically Update Files
+        .text
+          p
+            b Any updates you make are swiftly backed up to Binder. 
+            | No longer do you need to manually upload every single revision you make, 
+            | be rest assured your work is being kept safe and sound in Binder.
+          p
+            b We keep old file versions
+            | ³. If you realise you don't want a specific update to be backed up, 
+            | you can either roll-back the file to a former version, 
+            | or update the file to overwrite the version.
+      //- img.col-md-5(src="/img/index/loss.gif")
+      .img.col-md-5
+        i.fas.fa-sync
+    hr
+  section#final
+    #stars
+    #start2
+    #start3
+    .content
+      h1.color-inverse What are you waiting for?
+      .box
+        //- a(href="/register")
+        //-   button.register.color-inverse Get Started
+        .downloads
+          apsn.color-inverse-darker GET IT FOR
+          .buttons
+            a(href="https://github.com/DeveloperRic/binder-local/releases")
+              button.bg-secondary-light
+                i.fab.fa-windows
+                | Windows 10
+            //- a(href="https://github.com/DeveloperRic/binder-local/releases")
+            //-   button.bg-secondary-light
+            //-     i.fab.fa-apple
+            //-     | Mac OS X

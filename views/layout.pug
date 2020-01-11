@@ -1,0 +1,37 @@
+doctype html
+html(lang="en", ng-app="app")
+  head
+    base(href="/")
+    meta(charset='UTF-8')
+    meta(name="viewport", content="width=device-width,initial-scale=1")
+
+    title= title
+
+    link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css")
+    link(rel="stylesheet", href="https://www.w3schools.com/w3css/4/w3.css")
+    link(rel='stylesheet', href='/css/base.css')
+    link(rel='stylesheet', href='/css/anim.css')
+    link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Montserrat:600,700', async)
+    //-  title font ^
+    link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Open+Sans:400', async)
+    //-  main  font ^ (,700) || Nunito
+    link(rel='stylesheet', href="https://fonts.googleapis.com/css?family=Raleway:300&display=swap", async)
+    //- light font @ 100
+    link(rel="stylesheet", href="https://fonts.googleapis.com/icon?family=Material+Icons", async)
+    link(rel="stylesheet", href="https://use.fontawesome.com/releases/v5.8.2/css/all.css")
+    block styles
+
+    script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js")
+    //- script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular-route.js")
+    script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular-cookies.min.js")
+    script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular-sanitize.min.js")
+    script(src="https://code.jquery.com/jquery-3.3.1.slim.min.js")
+    script(src='/js/contextMenu.js')
+    script(src="/js/client.js")
+    block scripts
+
+  body
+    - var horzSpinner = "<div class='lds-ellipsis'><div></div><div></div><div></div><div></div></div>"
+    - var circleSpinner = "<div class='lds-ring'><div></div><div></div><div></div><div></div></div>"
+    - var smallCircleSpinner = "<div class='spinner-box'><div class='circle-border'><div class='circle-core'></div></div></div>"
+    block content
