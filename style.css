@@ -5,11 +5,14 @@
 
 .icon{
     /* make them all a consistent size*/
-    
 }
 
 .logo{
     /* border: solid; */
+}
+
+.logo-image{
+    background-color: white;
 }
 
 .info-container{
@@ -19,20 +22,43 @@
 
 .people-menu, .logs-menu{
     margin: auto;
-    border: 0.5%;
+    border: 0.2%;
+    border-radius: 15px;
     border-style: solid;
-    border-color:#80002a;
-    border-width: 1%;
+    border-color:#e60000;
+    border-width: 0.5%;
     height: 40%;
     width: 20%;
+    background-color: white;
+}
+
+.pm{
+    text-align: left;
 }
 
 .map {
     margin: auto;
-    border: 0.5%;
+    border: 0.2%;
+    border-radius: 15px;
     border-style: solid;
-    border-color:#80002a;
-    border-width: 1%;
+    border-color: #e60000;
+    border-width: 0.5%;
     height: 40%;
     width: 40%;
+    background-color: white;
 }
+
+h1, h2, h3{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 100;
+    text-align: center;
+}
+
+h2{
+    background-color:#d1d1e0;
+}
+
+body{
+    background-color: #33000f;
+}
+
