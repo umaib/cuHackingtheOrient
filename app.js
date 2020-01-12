@@ -4,6 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const mongoose = require("mongoose");
 const logger = require("morgan");
+const createError = require("http-errors");
 
 const G = require("./config/globals");
 
@@ -26,22 +27,7 @@ app.use(
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/api", require("./api/api"));
-
-app.route("/*").get((req, res) => {
-  var path = req.path.substr(1);
-  if (path.includes("/")) {
-    path = path.substr(0, path.indexOf("/"));
-  }
-  fs.exists("./html/app.client.stage." + path + ".html", exists => {
-    if (exists) {
-      res.sendFile("app.client.router.html", {
-        root: "./html"
-      });
-    } else {
-      res.sendFile("app.client.landing.html", { root: "./html" });
-    }
-  });
-});
+app.get("/", (req, res) => res.sendFile("index.html", {root: "./"}));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
