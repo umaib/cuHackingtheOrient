@@ -11,7 +11,7 @@ Using our project in 7 easy steps :)
 2. Extract the files
 3. Open a terminal to the current directory
 4. run command "npm i"
-5. run command "npm start"
+5. run command "npm start" (make sure nothing else is running on port 8080)
 6. open a web browser and visit "http://localhost:8080/"
 7. Enjoy!
 
