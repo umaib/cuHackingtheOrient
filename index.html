@@ -27,7 +27,7 @@
     </div>
 
     <div class="search-container" ng-show="search.visible">
-        <div class="close" ng-click="search.close()">✕ Close</div>
+        <div><span class="close" ng-click="search.close()">✕ Close</span> <i>First 50 results</i></div>
         <table ng-show="!seach.error">
             <tr>
                 <th>device-id</th>
@@ -39,7 +39,7 @@
                 <td>{{ev.deviceId}}</td>
                 <td>{{ev.guestId}}</td>
                 <td>{{ev.eventId}}</td>
-                <td>{{ev.formattedTimestamp}}</td>
+                <td class="link" ng-click="context.switch(ev.timestamp, ev.deviceId, ev.guestId)">{{ev.formattedTimestamp}}</td>
             </tr>
         </table>
         <h2 ng-show="search.error">Something went wrong, check console</h2>
@@ -1418,7 +1418,6 @@
             <input type="range" min="1578151801"  step="5" max="1578236760" value="1578151801" ng-model="context.timeInHtml" ng-change="context.switch(value, null, null, 500)" class="slider" id="myRange" list="repeat">
             <datalist id="repeat">
                 <option ng-repeat="option in timebar.options" ng-value="option">{{option}}</option>
-
             </datalist>
             <script>
                 
