@@ -4,6 +4,7 @@ const fs = require("fs");
 const Event = require("../model/event");
 const Device = require("../model/device");
 const Person = require("../model/person");
+const RoomSnapshot = require("../model/roomSnapshot");
 
 const DATA_FILE_NAME = "api/martello-data.json";
 
@@ -19,7 +20,10 @@ function resetCollections() {
         if (err) return reject(err);
         Person.deleteMany({}, err => {
           if (err) return reject(err);
-          resolve();
+          RoomSnapshot.deleteMany({}, err => {
+            if (err) return reject(err);
+            resolve();
+          })
         });
       });
     });

@@ -18,10 +18,10 @@
 
         <div class="info-container" style="margin-top: 50px">
             <div class="people-menu">
-                <h2>People in Room ###</h2>
-                <p class="pm"><img class="icon" src="images/guest.png"> Guests:</p>
-                <p class="pm"><img class="icon" src="images/staff.png"> Staff:</pclass="pm">
-                <p class="pm"> <img class="icon" src="images/unknown.png">Unknown Visitors: Bob, April</p>
+                <h2>People in Room {{context.room}}</h2>
+                <p class="pm"><img class="icon" src="images/guest.png"> Guests: {{people.guestNames}}</p>
+                <p class="pm"><img class="icon" src="images/staff.png"> Staff: {{people.staffNames}}</pclass="pm">
+                <p class="pm"> <img class="icon" src="images/unknown.png">Unknown Visitors: {{people.unknownNames}}</p>
                 <!-- <div>Icons made by <a href="https://www.flaticon.com/authors/vitaly-gorbachev" title="Vitaly Gorbachev">Vitaly Gorbachev</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div> -->
             </div>
     
@@ -35,7 +35,7 @@
             </div>
     
             <div class="logs-menu">
-                <h2>Activity Log for Room ###</h2>
+                <h2>Activity Log for Room {{context.room}}</h2>
 
                 
                 <p><img class="icon" src="images/unlock.png"> Door is unlocked.</p>

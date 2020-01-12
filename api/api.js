@@ -7,6 +7,7 @@ const Device = require("../model/device");
 const parseMain = require("./parse");
 
 router.use("/query", require("./query"));
+router.use("/aggregate", require("./aggregate"));
 
 router.get("/parse", (req, res, next) => {
   parseMain()

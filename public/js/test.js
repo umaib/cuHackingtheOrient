@@ -21,7 +21,7 @@ app.controller("testCtrl", function($scope, $rootScope, $http) {
             _id: 0
           },
           sort: {
-            timestamp: -1
+            timestamp: 1
           }
         })
         .then(
