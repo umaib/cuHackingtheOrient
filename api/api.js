@@ -2,7 +2,7 @@ const router = require("express").Router();
 const fs = require("fs");
 
 const Event = require("../model/event");
-const Device = require("../model/device");
+const RoomSnapshot = require("../model/roomSnapshot");
 
 const parseMain = require("./parse");
 
@@ -12,9 +12,9 @@ router.use("/aggregate", require("./aggregate"));
 router.get("/parse", (req, res, next) => {
   parseMain()
     .then(() => {
-      Event.find({}, (err, events) => {
+      RoomSnapshot.find({}, (err, snapshots) => {
         if (err) return next(err);
-        res.send(events);
+        res.send(snapshots);
       });
     })
     .catch(next);

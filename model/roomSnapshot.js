@@ -4,14 +4,15 @@ var roomSnapshotSchema = mongoose.Schema({
   room: {
     type: String,
     required: true,
-    unique: true
+    index: true
   },
   timestamp: {
     type: Number,
-    required: true
+    required: true,
+    index: true
   },
   people: {
-    type: Array,
+    type: [String],
     default: []
   }
 });

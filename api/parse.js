@@ -23,7 +23,7 @@ function resetCollections() {
           RoomSnapshot.deleteMany({}, err => {
             if (err) return reject(err);
             resolve();
-          })
+          });
         });
       });
     });
@@ -57,6 +57,31 @@ async function main() {
     let eventDoc = makeEvent(event_data, timestamp);
     if (eventDoc) {
       await Event.create(eventDoc);
+    }
+
+    if (event_data["device"] == "door sensor") {
+      let update;
+      if (
+        ["successful keycard unlock", "unlocked no keycard"].includes(
+          event_data["event"]
+        )
+      ) {
+        update = {
+          $addToSet: { people: event_data["guest-id"] }
+        };
+      } else {
+        update = {
+          $pull: { people: event_data["guest-id"] }
+        };
+      }
+      await RoomSnapshot.updateOne(
+        {
+          room: event_data["device-id"],
+          timestamp: timestamp.getTime()
+        },
+        update,
+        { upsert: true }
+      );
     }
 
     if (
