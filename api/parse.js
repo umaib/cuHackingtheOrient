@@ -83,16 +83,73 @@ async function main() {
         { upsert: true }
       );
     }
+    if (event_data["device"] == "access point") {
+      let update;
+      if (["user connected"].includes(event_data["event"])) {
+        update = {
+          $addToSet: { people: event_data["guest-id"] }
+        };
+      } else {
+        update = {
+          $pull: { people: event_data["guest-id"] }
+        };
+      }
+      await RoomSnapshot.updateOne(
+        {
+          room: event_data["device-id"],
+          timestamp: timestamp.getTime()
+        },
+        update,
+        { upsert: true }
+      );
+    }
+    if (event_data["device"] == "motion sensor") {
+      await RoomSnapshot.updateOne(
+        {
+          room: event_data["device-id"],
+          timestamp: timestamp.getTime()
+        },
+        {
+          $addToSet: { people: event_data["guest-id"] }
+        },
+        { upsert: true }
+      );
+    }
+    if (event_data["device"] == "phone") {
+      let update;
+      if (["off hook"].includes(event_data["event"])) {
+        update = {
+          $addToSet: { people: event_data["guest-id"] }
+        };
+      } else {
+        update = {
+          $pull: { people: event_data["guest-id"] }
+        };
+      }
+      await RoomSnapshot.updateOne(
+        {
+          room: event_data["device-id"],
+          timestamp: timestamp.getTime()
+        },
+        update,
+        { upsert: true }
+      );
+    }
 
     if (
       event_data["guest-id"] != "n/a" &&
       !people.includes(event_data["guest-id"])
     ) {
       people.push(event_data["guest-id"]);
-      await Person.create({
-        name: event_data["guest-id"],
-        role: "unknown"
-      });
+      await Person.updateOne(
+        {
+          name: event_data["guest-id"]
+        },
+        {
+          role: "unknown"
+        },
+        { upsert: true }
+      );
     }
 
     if (

@@ -33,7 +33,7 @@
 
     <form class="search-bar" ng-submit="search.search()">
       <input class="search-bar-text" type="text" ng-change="search.onChange()" ng-model="search.query"
-        placeholder="Search 'elevator'..."><br>
+        placeholder="Search 'elevator' or room '210' ..."><br>
     </form>
   </div>
 
@@ -1414,6 +1414,26 @@
         <p class="pm" ng-if="event.eventId == 'door closed'">
           <img class="icon" src="/img/lock.png">
           {{event.deviceId}} door closes
+        </p>
+        <p class="pm" ng-if="event.eventId == 'user connected'">
+          <img class="icon" src="/img/wifi.png">
+          {{event.guestId}} connected to {{event.deviceId}}
+        </p>
+        <p class="pm" ng-if="event.eventId == 'user disconnected'">
+          <img class="icon" src="/img/wifi.png">
+          {{event.guestId}} disconnected from {{event.deviceId}}
+        </p>
+        <p class="pm" ng-if="event.eventId == 'off hook'">
+          <img class="icon" src="/img/telephone.png">
+          {{event.guestId}} started call in room {{event.deviceId}}
+        </p>
+        <p class="pm" ng-if="event.eventId == 'on hook'">
+          <img class="icon" src="/img/telephone.png">
+          {{event.guestId}} ended call in room {{event.deviceId}}
+        </p>
+        <p class="pm" ng-if="event.eventId == 'motion detected'">
+          <img class="icon" src="/img/motion-sensor.png">
+          Motion detected at {{event.deviceId}}
         </p>
       </ng-repeat>
     </div>

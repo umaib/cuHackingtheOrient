@@ -17,14 +17,16 @@ app.controller("mainCtrl", function($scope, $rootScope, $http, $interval) {
           context.person = person || context.person;
           Promise.all([people.refresh(), activity.refresh()])
             .then(() => {
+              timebar.value = timebar.frames.findIndex(t => t == timestamp);
+
               console.log("Context switched", context.timestamp, activity.log);
               search.visible = false;
               let date = new Date(0);
               date.setUTCMilliseconds(context.timestamp);
               let time = dateToTime(date);
-              context.time = `${time.simpleHours}:${time.minutes}:${time.seconds} ${
-                time.isAm ? "AM" : "PM"
-              } ${DAYS_OF_WEEK[date.getDay()]}`;
+              context.time = `${time.simpleHours}:${time.minutes}:${
+                time.seconds
+              } ${time.isAm ? "AM" : "PM"} ${DAYS_OF_WEEK[date.getDay()]}`;
               console.log(context.time);
               $scope.$apply();
             })
@@ -192,7 +194,7 @@ app.controller("mainCtrl", function($scope, $rootScope, $http, $interval) {
           "events",
           "find",
           q,
-          { deviceId:1, eventId: 1, guestId: 1 },
+          { deviceId: 1, eventId: 1, guestId: 1 },
           null,
           { timestamp: 1 }
         )
