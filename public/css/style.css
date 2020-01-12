@@ -1,8 +1,239 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+/* .outer-container{
+    align-content: space-around;
+} */
+
+.top-container {
+  display: flex;
+  margin: 10px 10px 20px 10px;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
-a {
-  color: #00B7FF;
+.search-bar-text {
+  border-radius: 6px;
+  float: right;
+  width: 450px;
+  height: 25px;
+  padding: 3px 5px;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-size: 14pt;
+  border: 1px solid #b71c1c;
+}
+
+.logo-image {
+  margin: auto;
+  margin-left: 16%;
+  border-radius: 15px;
+  background-color: #f5f5f5;
+}
+
+.search-container {
+  position: absolute;
+  top: 54px;
+  right: 30px;
+  width: 60vw;
+  min-height: 55vh;
+  max-height: 70vh;
+  padding: 12px;
+  border-radius: 10px;
+  background-color: #f5f5f5;
+  box-shadow: 1.5px 1.5px 5px rgba(0, 0, 0, 0.2);
+  overflow: auto;
+  z-index: 2;
+}
+
+.search-container .close {
+  width: fit-content;
+  padding: 3px 10px 5px 6px;
+  border-radius: 10px;
+  background-color: #e0e0e0;
+  cursor: pointer;
+}
+
+.search-container .link {
+  color: #2196f3;
+  cursor: pointer;
+}
+
+.search-container .link:hover {
+  text-decoration: underline;
+}
+
+.search-container table {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.search-container th {
+    text-align: left;
+}
+
+.info-container {
+  display: flex;
+  flex-grow: 1;
+  padding: 0 25px 20px 25px;
+  align-items: center;
+  overflow: auto;
+}
+
+.people-menu {
+  left: 20px;
+}
+
+.logs-menu {
+  right: 20px;
+}
+
+.people-menu,
+.logs-menu {
+  display: flex;
+  width: 160px;
+  height: 70%;
+  margin-left: 20px;
+  margin-right: 20px;
+  flex-direction: column;
+  border-radius: 15px;
+  background-color: #f5f5f5;
+  position: fixed;
+  top: calc(50vh - 35%);
+}
+
+.map {
+  margin: auto;
+  border: 0.1%;
+  border-radius: 15px;
+  border-width: 0.5%;
+  /* height: 615px; */
+  width: 50%;
+  background-color: #f5f5f5;
+}
+
+.map svg {
+  height: 60%;
+}
+
+.timeline-container {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  /* Width of the outside container */
+}
+
+.timeline-container .time p {
+  padding: 3px 7px;
+  background-color: #f5f5f5;
+  color: black;
+}
+
+.timeline-container .timeline {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.timeline-container .timeline md-slider-container {
+    width: 80%;
+}
+
+/* The slider itself */
+.slider {
+  margin-bottom: 20px;
+  -webkit-appearance: none;
+  border-radius: 25px;
+  /* Override default CSS styles */
+  appearance: none;
+  width: 80vw;
+  /* Full-width */
+  height: 5px;
+  /* Specified height */
+  background: white;
+  /* Grey background */
+  outline: none;
+  /* Remove outline */
+  opacity: 0.7;
+  /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: 0.2s;
+  /* 0.2 seconds transition on hover */
+  transition: opacity 0.2s;
+}
+/* Mouse-over effects */
+.slider:hover {
+  opacity: 1;
+  /* Fully shown on mouse-over */
+}
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border-radius: 50%;
+  /* Override default look */
+  appearance: none;
+  width: 25px;
+  /* Set a specific slider handle width */
+  height: 25px;
+  /* Slider handle height */
+  background: #cc0000;
+  /* Green background */
+  cursor: pointer;
+  /* Cursor on hover */
+}
+.slider::-moz-range-thumb {
+  width: 25px;
+  /* Set a specific slider handle width */
+  height: 25px;
+  /* Slider handle height */
+  background: #4caf50;
+  /* Green background */
+  cursor: pointer;
+  /* Cursor on hover */
+}
+
+.pm {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  text-align: center;
+}
+
+.icon {
+  height: 45px;
+  width: 40px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.cls-4,
+.selected {
+  cursor: pointer;
+}
+
+.dim {
+  filter: brightness(50%) grayscale();
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-weight: 100;
+  text-align: center;
+}
+
+h2 {
+  background-color: #d1d1e0;
+}
+
+body {
+  display: flex;
+  height: 100vh;
+  margin: 0;
+  padding-top: 10px;
+  flex-direction: column;
+  background-color: #33000f;
+}
+
+* {
+  box-sizing: border-box;
 }

@@ -23,7 +23,7 @@ function resetCollections() {
           RoomSnapshot.deleteMany({}, err => {
             if (err) return reject(err);
             resolve();
-          })
+          });
         });
       });
     });
@@ -51,12 +51,89 @@ async function main() {
     // console.log(event_data);
     // console.log("\n\n================== data");
 
-    let timestamp = new Date();
-    timestamp.setUTCMilliseconds(date_seconds * 1000);
+    let timestamp = new Date(0);
+    timestamp.setUTCSeconds(date_seconds);
 
     let eventDoc = makeEvent(event_data, timestamp);
     if (eventDoc) {
       await Event.create(eventDoc);
+    }
+
+    if (event_data["device"] == "door sensor") {
+      let update;
+      if (
+        ["successful keycard unlock", "unlocked no keycard"].includes(
+          event_data["event"]
+        )
+      ) {
+        update = {
+          $addToSet: { people: event_data["guest-id"] }
+        };
+      } else {
+        update = {
+          $pull: { people: event_data["guest-id"] }
+        };
+      }
+      await RoomSnapshot.updateOne(
+        {
+          room: event_data["device-id"],
+          timestamp: timestamp.getTime()
+        },
+        update,
+        { upsert: true }
+      );
+    }
+    if (event_data["device"] == "access point") {
+      let update;
+      if (["user connected"].includes(event_data["event"])) {
+        update = {
+          $addToSet: { people: event_data["guest-id"] }
+        };
+      } else {
+        update = {
+          $pull: { people: event_data["guest-id"] }
+        };
+      }
+      await RoomSnapshot.updateOne(
+        {
+          room: event_data["device-id"],
+          timestamp: timestamp.getTime()
+        },
+        update,
+        { upsert: true }
+      );
+    }
+    if (event_data["device"] == "motion sensor") {
+      await RoomSnapshot.updateOne(
+        {
+          room: event_data["device-id"],
+          timestamp: timestamp.getTime()
+        },
+        {
+          $addToSet: { people: event_data["guest-id"] }
+        },
+        { upsert: true }
+      );
+    }
+    if (event_data["device"] == "phone") {
+      let update;
+      if (["off hook"].includes(event_data["event"])) {
+        update = {
+          $addToSet: { people: event_data["guest-id"] }
+        };
+      } else {
+        update = {
+          $pull: { people: event_data["guest-id"] }
+        };
+      }
+      await RoomSnapshot.updateOne(
+        {
+          room: event_data["device-id"],
+          timestamp: timestamp.getTime()
+        },
+        update,
+        { upsert: true }
+      );
     }
 
     if (
@@ -64,10 +141,15 @@ async function main() {
       !people.includes(event_data["guest-id"])
     ) {
       people.push(event_data["guest-id"]);
-      await Person.create({
-        name: event_data["guest-id"],
-        role: "unknown"
-      });
+      await Person.updateOne(
+        {
+          name: event_data["guest-id"]
+        },
+        {
+          role: "unknown"
+        },
+        { upsert: true }
+      );
     }
 
     if (
@@ -138,7 +220,7 @@ function makeEvent(event_data, timestamp) {
   let event = {
     deviceId: event_data["device-id"],
     eventId: event_data["event"],
-    timestamp: timestamp,
+    timestamp,
     guestId: event_data["guest-id"]
   };
 
