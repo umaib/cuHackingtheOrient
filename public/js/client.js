@@ -1,4 +1,4 @@
-var app = angular.module("app", []);
+var app = angular.module("app", ["ngMaterial"]);
 
 /*
 THIS IS MEANT TO BE A GLOBALS FILE

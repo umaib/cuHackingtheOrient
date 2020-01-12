@@ -51,8 +51,8 @@ async function main() {
     // console.log(event_data);
     // console.log("\n\n================== data");
 
-    let timestamp = new Date();
-    timestamp.setUTCMilliseconds(date_seconds * 1000);
+    let timestamp = new Date(0);
+    timestamp.setUTCSeconds(date_seconds);
 
     let eventDoc = makeEvent(event_data, timestamp);
     if (eventDoc) {
@@ -163,7 +163,7 @@ function makeEvent(event_data, timestamp) {
   let event = {
     deviceId: event_data["device-id"],
     eventId: event_data["event"],
-    timestamp: timestamp,
+    timestamp,
     guestId: event_data["guest-id"]
   };
 

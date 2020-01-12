@@ -4,16 +4,35 @@ app.controller("mainCtrl", function($scope, $rootScope, $http, $interval) {
     timestamp: null,
     room: null,
     person: null,
-    switch: (timestamp, room, person) => {
-      console.log("got context switch request");
-      context.timestamp = timestamp || context.timestamp;
-      context.room = room.toString() || context.room;
-      context.person = person || context.person;
-      Promise.all([people.refresh(), activity.refresh(), timebar.refresh()])
-        .then(() =>
-          console.log("Context switched", context.timestamp, activity.log)
-        )
-        .catch(err => console.error(err));
+    timeInHtml: null,
+    time: "",
+    delayTask: null,
+    switch: (timestamp, room, person, delay = 0) => {
+      $interval.cancel(context.delayTask);
+      context.delayTask = $interval(
+        () => {
+          console.log("got context switch request");
+          context.timestamp = timestamp || context.timestamp;
+          context.room = room ? room.toString() : context.room;
+          context.person = person || context.person;
+          Promise.all([people.refresh(), activity.refresh()])
+            .then(() => {
+              console.log("Context switched", context.timestamp, activity.log);
+              search.visible = false;
+              let date = new Date(0);
+              date.setUTCMilliseconds(context.timestamp);
+              let time = dateToTime(date);
+              context.time = `${time.simpleHours}:${time.minutes}:${time.seconds} ${
+                time.isAm ? "AM" : "PM"
+              } ${DAYS_OF_WEEK[date.getDay()]}`;
+              console.log(context.time);
+              $scope.$apply();
+            })
+            .catch(err => console.error(err));
+        },
+        delay,
+        1
+      );
     },
     refresh: () => {
       return new Promise((resolve, reject) => {
@@ -52,7 +71,10 @@ app.controller("mainCtrl", function($scope, $rootScope, $http, $interval) {
     changeTask: null,
     error: false,
     result: [],
-    close: () => (search.visible = false),
+    close: () => {
+      search.visible = false;
+      search.query = "";
+    },
     onChange: () => {
       $interval.cancel(search.changeTask);
       if (search.query != "") {
@@ -82,12 +104,13 @@ app.controller("mainCtrl", function($scope, $rootScope, $http, $interval) {
       )
         .then(events => {
           search.result = events.map(ev => {
-            let time = dateToTime(new Date(ev.timestamp));
+            let date = new Date(ev.timestamp);
+            let time = dateToTime(date);
             return {
               ...ev,
               formattedTimestamp: `${time.simpleHours}:${time.minutes}:${
                 time.seconds
-              } ${time.isAm ? "AM" : "PM"}`
+              } ${time.isAm ? "AM" : "PM"} ${DAYS_OF_WEEK[date.getDay()]}`
             };
           });
           search.visible = true;
@@ -101,7 +124,7 @@ app.controller("mainCtrl", function($scope, $rootScope, $http, $interval) {
   });
 
   let people = ($scope.people = {
-    NO_PEOPLE: "<none>",
+    NO_PEOPLE: "",
     guestNames: "",
     staffNames: "",
     unknownNames: "",
@@ -162,11 +185,14 @@ app.controller("mainCtrl", function($scope, $rootScope, $http, $interval) {
     log: [],
     refresh: () => {
       return new Promise((resolve, reject) => {
+        let q = {};
+        if (context.room) q.deviceId = context.room;
+        if (context.timestamp) q.timestamp = context.timestamp;
         doQuery(
           "events",
           "find",
-          { deviceId: context.room, timestamp: context.timestamp },
-          { eventId: 1, guestId: 1 },
+          q,
+          { deviceId:1, eventId: 1, guestId: 1 },
           null,
           { timestamp: 1 }
         )
@@ -180,10 +206,37 @@ app.controller("mainCtrl", function($scope, $rootScope, $http, $interval) {
   });
 
   let timebar = ($scope.timebar = {
-    refresh: () => {
-      return new Promise((resolve, reject) => resolve());
+    value: 0,
+    frames: [],
+    playTask: null,
+    listener: v => {
+      context.switch(timebar.frames[v], null, null, 0);
+    },
+    refresh: v => {
+      return new Promise((resolve, reject) => {
+        $interval.cancel(timebar.playTask);
+        doQuery("events", "find", null, { timestamp: 1 }, null, {
+          timestamp: 1
+        })
+          .then(events => {
+            timebar.frames = events.map(ev => ev.timestamp);
+            timebar.frames.unshift(1578193200000);
+            timebar.value = v || timebar.frames[0];
+            // timebar.playTask = $interval(() => {
+            //   if (timebar.value >= timebar.frames.length -1) {
+            //     timebar.value = 0;
+            //   } else timebar.value++;
+            //   timebar.listener(timebar.value);
+            // }, 200);
+            $scope.$apply();
+            resolve();
+          })
+          .catch(reject);
+      });
     }
   });
+
+  timeListener = timebar.listener;
 
   context
     .refresh()
@@ -241,4 +294,7 @@ app.controller("mainCtrl", function($scope, $rootScope, $http, $interval) {
     }
     return RegExp.escape(s);
   }
+  const DAYS_OF_WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 });
+
+var timeListener = () => {};
